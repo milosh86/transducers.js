@@ -172,6 +172,10 @@ function reduce(coll, xform, init) {
 }
 
 function transduce(coll, xform, reducer, init) {
+  if (typeof reducer === 'function') {
+    reducer = transformer(reducer);
+  }
+
   xform = xform(reducer);
   if(init === undefined) {
     init = xform['@@transducer/init']();

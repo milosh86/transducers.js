@@ -388,6 +388,33 @@ describe('', () => {
         [4, 3, 6, 4, 8]);
   });
 
+  it('transduce should accept regular functions as reducers', () => {
+     eql(transduce([1, 2, 3],
+        map(x => x),
+        add,
+        0
+    ), 6);
+
+    eql(transduce([1, 2, 3, 4],
+        compose(
+          map(x => x + 1),
+          filter(x => x % 2 === 0)
+        ),
+        push,
+        []),
+      [2, 4])
+
+    eql(transduce({ x: 1, y: 2 },
+        compose(
+          map(second),
+          map(x => x + 1),
+          map(x => ['foo' + x, x])
+        ),
+        merge,
+        {}),
+      { foo2: 2, foo3: 3 })
+  });
+
   it('array should work', function() {
     var nums = {
       i: 0,
